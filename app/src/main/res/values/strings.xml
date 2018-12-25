@@ -1,4 +1,11 @@
 <resources>
     <string name="app_name">WishList</string>
     <string name="action_settings">Settings</string>
+
+    <!-- EDIT/CREATE screen -->
+    <string name="edit_screen_title">Create new wish</string>
+    <string name="edit_screen_title_hint">Title</string>
+    <string name="edit_screen_link_hint">Link</string>
+    <string name="edit_screen_description_hint">Description</string>
+    <string name="edit_screen_submit">Add new</string>
 </resources>

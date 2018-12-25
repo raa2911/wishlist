@@ -1,7 +1,8 @@
-package com.raapp.wishlist
+package com.raapp.wishlist.view
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import com.raapp.wishlist.R
 
 class WishEditActivity : AppCompatActivity() {
 

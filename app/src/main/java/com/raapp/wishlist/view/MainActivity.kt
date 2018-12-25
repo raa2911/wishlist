@@ -1,11 +1,11 @@
-package com.raapp.wishlist
+package com.raapp.wishlist.view
 
 import android.content.Intent
 import android.os.Bundle
-import com.google.android.material.snackbar.Snackbar
-import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
+import com.raapp.wishlist.R
 
 import kotlinx.android.synthetic.main.activity_main.*
 
