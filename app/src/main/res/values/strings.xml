@@ -8,4 +8,10 @@
     <string name="edit_screen_link_hint">Link</string>
     <string name="edit_screen_description_hint">Description</string>
     <string name="edit_screen_submit">Add new</string>
+    <string name="edit_screen_radio_private">private item</string>
+    <string name="edit_screen_radio_friends">only friends</string>
+    <string name="edit_screen_radio_public">public</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

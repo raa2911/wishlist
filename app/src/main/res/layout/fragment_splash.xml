@@ -5,8 +5,7 @@
         android:background="@color/colorAccent"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        style="@style/AppTheme.NoActionBar"
-        tools:context=".view.SplashActivity">
+        tools:context=".view.SplashFragment">
 
     <ImageView
             android:layout_gravity="center"
