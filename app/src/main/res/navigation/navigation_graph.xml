@@ -18,6 +18,7 @@
                 app:popUpTo="@id/splashFragment"
                 app:popUpToInclusive="true"
                 app:launchSingleTop="true"/>
+        <action android:id="@+id/action_splashFragment_to_authFragment" app:destination="@id/authFragment"/>
     </fragment>
     <fragment android:id="@+id/wishListFragment"
               android:name="com.raapp.wishlist.view.WishListFragment"
@@ -34,4 +35,8 @@
               android:name="com.raapp.wishlist.view.WishEditFragment"
               android:label="fragment_wish_edit"
               tools:layout="@layout/fragment_wish_edit"/>
+    <fragment android:id="@+id/authFragment" android:name="com.raapp.wishlist.view.AuthFragment"
+              android:label="fragment_auth" tools:layout="@layout/fragment_auth">
+        <action android:id="@+id/action_authFragment_to_wishListFragment" app:destination="@id/wishListFragment"/>
+    </fragment>
 </navigation>
