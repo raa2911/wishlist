@@ -16,6 +16,7 @@ import com.google.android.gms.common.ConnectionResult
 import com.google.android.gms.common.GoogleApiAvailability
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
+import com.raapp.wishlist.BaseFragment
 import com.raapp.wishlist.Constants.LOG_TAG
 
 import com.raapp.wishlist.R
@@ -27,11 +28,11 @@ import kotlin.concurrent.schedule
  * A simple [Fragment] subclass.
  *
  */
-class SplashFragment : Fragment() {
+class SplashFragment : BaseFragment() {
     private var timer: Timer? = null
     private val splashDelay = 2000L
     private var firebaseUser: FirebaseUser? = null
-    private val RC_SIGN_IN = 101;
+    private val RC_SIGN_IN = 101
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -70,9 +71,8 @@ class SplashFragment : Fragment() {
     private fun startFirebaseAuthActivity() {
         val apiInstance = GoogleApiAvailability.getInstance()
         val response = apiInstance.isGooglePlayServicesAvailable(context)
-        Log.d(LOG_TAG, "startFirebaseAuthActivity isGooglePlayServicesAvailable = $response")
-        Log.d(
-            LOG_TAG,
+        logMessage("startFirebaseAuthActivity isGooglePlayServicesAvailable = $response")
+        logMessage(
             "startFirebaseAuthActivity isGooglePlayServicesAvailable = ${apiInstance.getErrorString(
                 response
             )}"
@@ -97,17 +97,18 @@ class SplashFragment : Fragment() {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        Log.d(LOG_TAG, "onActivityResult is start")
+        logMessage("onActivityResult is start")
         if (requestCode == RC_SIGN_IN) {
             val response = IdpResponse.fromResultIntent(data)
+            logMessage("onActivityResult RC_SIGN_IN, response is $response")
             if (resultCode == Activity.RESULT_OK) {
                 // Successfully signed in
                 val user = FirebaseAuth.getInstance().currentUser
-                Log.d(LOG_TAG, "onActivityResult user is $user")
-                this@SplashFragment.findNavController().navigate(R.id.action_splashFragment_to_authFragment)
+                logMessage("onActivityResult user is $user")
+                this@SplashFragment.findNavController().navigate(R.id.action_splashFragment_to_wishListFragment)
             } else {
                 startFirebaseAuthActivity()
-                Log.d(LOG_TAG, "onActivityResult has error")
+                logMessage("onActivityResult has error")
             }
         }
     }

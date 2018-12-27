@@ -6,21 +6,22 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.navigation.fragment.findNavController
+import com.firebase.ui.auth.AuthUI
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
+import com.raapp.wishlist.BaseFragment
 
 import com.raapp.wishlist.R
-
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
 
 /**
  * A simple [Fragment] subclass.
  *
  */
-class WishListFragment : Fragment() {
+class WishListFragment : BaseFragment() {
+    private var firebaseUser: FirebaseUser? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -30,8 +31,42 @@ class WishListFragment : Fragment() {
         view.findViewById<FloatingActionButton>(R.id.wish_list_fab).setOnClickListener {
             this@WishListFragment.findNavController().navigate(R.id.action_wishListFragment_to_wishEditFragment)
         }
+        view.findViewById<TextView>(R.id.wish_list_label).text = firebaseUser?.toString()
         return view
     }
 
+    override fun onStart() {
+        super.onStart()
+        initToolbar()
+    }
 
+    private fun initToolbar() {
+        getToolbar()?.inflateMenu(R.menu.wish_list_menu)
+        getToolbar()?.setOnMenuItemClickListener {
+            when (it.itemId) {
+                R.id.log_out_menu_item -> {
+                    context?.let { context ->
+                        AuthUI.getInstance()
+                            .signOut(context)
+                            .addOnCompleteListener {
+                                this.findNavController().navigate(R.id.action_wishListFragment_to_splashFragment)
+                            }
+                    }
+                    true
+                }
+                else -> false
+            }
+        }
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        firebaseUser = FirebaseAuth.getInstance().currentUser
+    }
+
+
+    override fun onDetach() {
+        super.onDetach()
+        firebaseUser = null
+    }
 }
