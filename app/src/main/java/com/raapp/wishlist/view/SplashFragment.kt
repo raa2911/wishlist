@@ -4,7 +4,7 @@ package com.raapp.wishlist.view
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
+import android.os.Handler
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -17,7 +17,6 @@ import com.google.android.gms.common.GoogleApiAvailability
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.raapp.wishlist.BaseFragment
-import com.raapp.wishlist.Constants.LOG_TAG
 
 import com.raapp.wishlist.R
 import java.util.*
@@ -30,9 +29,12 @@ import kotlin.concurrent.schedule
  */
 class SplashFragment : BaseFragment() {
     private var timer: Timer? = null
-    private val splashDelay = 2000L
+    private val splashDelay = 1000L
+    private val authHandlerDelay = 200L
     private var firebaseUser: FirebaseUser? = null
     private val RC_SIGN_IN = 101
+    private val RC_ERROR_DIALOG = 102
+    private var handler: Handler? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -55,6 +57,7 @@ class SplashFragment : BaseFragment() {
     override fun onStop() {
         super.onStop()
         stopTimer()
+        clearAuthHandler()
     }
 
     private fun startTimer() {
@@ -63,21 +66,31 @@ class SplashFragment : BaseFragment() {
             if (firebaseUser != null) {
                 this@SplashFragment.findNavController().navigate(R.id.action_splashFragment_to_wishListFragment)
             } else {
-                startFirebaseAuthActivity()
+                initFirebaseAuthActivity()
             }
         }
     }
 
-    private fun startFirebaseAuthActivity() {
+    private fun initFirebaseAuthActivity() {
         val apiInstance = GoogleApiAvailability.getInstance()
-        val response = apiInstance.isGooglePlayServicesAvailable(context)
-        logMessage("startFirebaseAuthActivity isGooglePlayServicesAvailable = $response")
+        val authStatusCode = apiInstance.isGooglePlayServicesAvailable(context)
+        logMessage("initFirebaseAuthActivity isGooglePlayServicesAvailable = $authStatusCode")
         logMessage(
-            "startFirebaseAuthActivity isGooglePlayServicesAvailable = ${apiInstance.getErrorString(
-                response
+            "initFirebaseAuthActivity isGooglePlayServicesAvailable = ${apiInstance.getErrorString(
+                authStatusCode
             )}"
         )
-        if (response == ConnectionResult.SUCCESS) {
+        if (authStatusCode == ConnectionResult.SUCCESS) {
+            showFirebaseAuthActivity()
+        } else {
+            showAuthErrorDialog(apiInstance, authStatusCode)
+        }
+    }
+
+    private fun showFirebaseAuthActivity() {
+        clearAuthHandler()
+        handler = Handler()
+        handler?.postDelayed({
             val providers = arrayListOf(
                 AuthUI.IdpConfig.EmailBuilder().build(),
                 AuthUI.IdpConfig.PhoneBuilder().build(),
@@ -90,9 +103,23 @@ class SplashFragment : BaseFragment() {
                     .build(),
                 RC_SIGN_IN
             )
-        } else {
+        }, authHandlerDelay)
+    }
 
+    private fun showAuthErrorDialog(
+        apiInstance: GoogleApiAvailability,
+        authStatusCode: Int
+    ) {
+        activity?.runOnUiThread {
+            apiInstance.showErrorDialogFragment(activity, authStatusCode, RC_ERROR_DIALOG) {
+                initFirebaseAuthActivity()
+            }
         }
+    }
+
+    private fun clearAuthHandler() {
+        handler?.removeCallbacksAndMessages(null)
+        handler = null
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -107,9 +134,13 @@ class SplashFragment : BaseFragment() {
                 logMessage("onActivityResult user is $user")
                 this@SplashFragment.findNavController().navigate(R.id.action_splashFragment_to_wishListFragment)
             } else {
-                startFirebaseAuthActivity()
+                initFirebaseAuthActivity()
                 logMessage("onActivityResult has error")
             }
+        }
+
+        if (requestCode == RC_ERROR_DIALOG) {
+            initFirebaseAuthActivity()
         }
     }
 
