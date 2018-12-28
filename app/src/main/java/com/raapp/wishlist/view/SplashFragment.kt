@@ -54,8 +54,13 @@ class SplashFragment : BaseFragment() {
         startTimer()
     }
 
-    override fun onStop() {
-        super.onStop()
+    override fun onResume() {
+        super.onResume()
+        startTimer()
+    }
+
+    override fun onPause() {
+        super.onPause()
         stopTimer()
         clearAuthHandler()
     }
@@ -99,7 +104,7 @@ class SplashFragment : BaseFragment() {
 
     private fun showFirebaseAuthUIDelayed() {
         clearAuthHandler()
-        handler = Handler()
+        handler = Handler(activity?.mainLooper)
         handler?.postDelayed({
             showFirebaseAuthUI()
         }, authHandlerDelay)
@@ -114,6 +119,7 @@ class SplashFragment : BaseFragment() {
         startActivityForResult(
             AuthUI.getInstance()
                 .createSignInIntentBuilder()
+                .setLogo(R.drawable.ic_noun_gift_list)
                 .setAvailableProviders(providers)
                 .build(),
             RC_SIGN_IN
