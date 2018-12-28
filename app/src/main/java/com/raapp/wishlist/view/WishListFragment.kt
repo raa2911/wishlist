@@ -17,8 +17,8 @@ import com.raapp.wishlist.BaseFragment
 import com.raapp.wishlist.R
 
 /**
- * A simple [Fragment] subclass.
- *
+ * A main [Fragment] screen.
+ * Consist list of user wishes and route controls to all flow of application.
  */
 class WishListFragment : BaseFragment() {
     private var firebaseUser: FirebaseUser? = null
