@@ -40,6 +40,7 @@ class SplashFragment : BaseFragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        startTimer()
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_splash, container, false)
     }
@@ -49,18 +50,8 @@ class SplashFragment : BaseFragment() {
         firebaseUser = FirebaseAuth.getInstance().currentUser
     }
 
-    override fun onStart() {
-        super.onStart()
-        startTimer()
-    }
-
-    override fun onResume() {
-        super.onResume()
-        startTimer()
-    }
-
-    override fun onPause() {
-        super.onPause()
+    override fun onDestroy() {
+        super.onDestroy()
         stopTimer()
         clearAuthHandler()
     }
