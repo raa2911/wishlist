@@ -60,50 +60,64 @@ class SplashFragment : BaseFragment() {
         clearAuthHandler()
     }
 
+    /*
+     * Start timer with Firebase user check.
+     * If user exist -> transition to main application fragment,
+     * if not -> start Firebase auth process
+     */
     private fun startTimer() {
         timer = Timer()
         timer?.schedule(splashDelay) {
             if (firebaseUser != null) {
                 this@SplashFragment.findNavController().navigate(R.id.action_splashFragment_to_wishListFragment)
             } else {
-                initFirebaseAuthActivity()
+                initFirebaseAuthUI()
             }
         }
     }
 
-    private fun initFirebaseAuthActivity() {
+    /*
+     * Check Firebase Auth (Play) services availability.
+     * If available -> show Firebase Auth UI,
+     * if not -> show dialog with error description for user.
+     */
+    private fun initFirebaseAuthUI() {
         val apiInstance = GoogleApiAvailability.getInstance()
         val authStatusCode = apiInstance.isGooglePlayServicesAvailable(context)
-        logMessage("initFirebaseAuthActivity isGooglePlayServicesAvailable = $authStatusCode")
+        logMessage("initFirebaseAuthUI isGooglePlayServicesAvailable = $authStatusCode")
         logMessage(
-            "initFirebaseAuthActivity isGooglePlayServicesAvailable = ${apiInstance.getErrorString(
+            "initFirebaseAuthUI isGooglePlayServicesAvailable = ${apiInstance.getErrorString(
                 authStatusCode
             )}"
         )
         if (authStatusCode == ConnectionResult.SUCCESS) {
-            showFirebaseAuthActivity()
+            showFirebaseAuthUIDelayed()
         } else {
             showAuthErrorDialog(apiInstance, authStatusCode)
         }
     }
 
-    private fun showFirebaseAuthActivity() {
+    private fun showFirebaseAuthUIDelayed() {
         clearAuthHandler()
         handler = Handler()
         handler?.postDelayed({
-            val providers = arrayListOf(
-                AuthUI.IdpConfig.EmailBuilder().build(),
-                AuthUI.IdpConfig.PhoneBuilder().build(),
-                AuthUI.IdpConfig.GoogleBuilder().build()
-            )
-            startActivityForResult(
-                AuthUI.getInstance()
-                    .createSignInIntentBuilder()
-                    .setAvailableProviders(providers)
-                    .build(),
-                RC_SIGN_IN
-            )
+            showFirebaseAuthUI()
         }, authHandlerDelay)
+    }
+
+    private fun showFirebaseAuthUI() {
+        val providers = arrayListOf(
+            AuthUI.IdpConfig.EmailBuilder().build(),
+            AuthUI.IdpConfig.PhoneBuilder().build(),
+            AuthUI.IdpConfig.GoogleBuilder().build()
+        )
+        startActivityForResult(
+            AuthUI.getInstance()
+                .createSignInIntentBuilder()
+                .setAvailableProviders(providers)
+                .build(),
+            RC_SIGN_IN
+        )
     }
 
     private fun showAuthErrorDialog(
@@ -112,16 +126,11 @@ class SplashFragment : BaseFragment() {
     ) {
         activity?.runOnUiThread {
             apiInstance.showErrorDialogFragment(activity, authStatusCode, RC_ERROR_DIALOG) {
-                initFirebaseAuthActivity()
+                initFirebaseAuthUI()
             }
         }
     }
-
-    private fun clearAuthHandler() {
-        handler?.removeCallbacksAndMessages(null)
-        handler = null
-    }
-
+    
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         logMessage("onActivityResult is start")
@@ -134,14 +143,19 @@ class SplashFragment : BaseFragment() {
                 logMessage("onActivityResult user is $user")
                 this@SplashFragment.findNavController().navigate(R.id.action_splashFragment_to_wishListFragment)
             } else {
-                initFirebaseAuthActivity()
+                initFirebaseAuthUI()
                 logMessage("onActivityResult has error")
             }
         }
 
         if (requestCode == RC_ERROR_DIALOG) {
-            initFirebaseAuthActivity()
+            initFirebaseAuthUI()
         }
+    }
+
+    private fun clearAuthHandler() {
+        handler?.removeCallbacksAndMessages(null)
+        handler = null
     }
 
     private fun stopTimer() {
