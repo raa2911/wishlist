@@ -7,6 +7,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import android.widget.Toast.LENGTH_LONG
+import androidx.navigation.fragment.findNavController
+import com.firebase.ui.auth.AuthUI
+import com.raapp.wishlist.BaseFragment
 
 import com.raapp.wishlist.R
 import com.raapp.wishlist.models.PrivacyType
@@ -30,7 +33,7 @@ private const val ARG_PARAM2 = "param2"
  * create an instance of this fragment.
  *
  */
-class WishEditFragment : Fragment() {
+class WishEditFragment : BaseFragment() {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
@@ -59,9 +62,7 @@ class WishEditFragment : Fragment() {
 
     override fun onStart() {
         super.onStart()
-        edit_button_submit.setOnClickListener {
-            validateFields()
-        }
+        initToolbar()
     }
 
     private fun validateFields() {
@@ -83,11 +84,28 @@ class WishEditFragment : Fragment() {
     }
 
     private fun saveNewWish(wish: Wish) {
-        thread {
-            wishRepository?.addNewWishLocal(wish)
-            activity?.runOnUiThread {
-                Toast.makeText(context, "Wish successful added", LENGTH_LONG).show()
-                activity?.onBackPressed()
+        wishRepository?.addNewWishLocal(wish)
+        Toast.makeText(context, "Wish successful added", LENGTH_LONG).show()
+        activity?.onBackPressed()
+    }
+
+
+    private fun initToolbar() {
+        getToolbar()?.run {
+            inflateMenu(R.menu.wish_edit_menu)
+            setOnMenuItemClickListener {
+                when (it.itemId) {
+                    R.id.edit_save_menu_item -> {
+                        validateFields()
+                        true
+                    }
+                    else -> false
+                }
+            }
+            setNavigationIcon(R.drawable.ic_arrow_back_light)
+            setNavigationOnClickListener {
+                // TODO
+                onBackPressed()
             }
         }
     }

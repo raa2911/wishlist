@@ -30,4 +30,8 @@ abstract class BaseFragment : Fragment() {
             Log.d(Constants.LOG_TAG, message)
         }
     }
+
+    protected fun onBackPressed() {
+        activity?.onBackPressed()
+    }
 }

@@ -1,9 +1,6 @@
 package com.raapp.wishlist.repository.dao
 
-import androidx.room.Dao
-import androidx.room.Delete
-import androidx.room.Insert
-import androidx.room.Query
+import androidx.room.*
 import com.raapp.wishlist.models.Wish
 
 @Dao
@@ -18,7 +15,7 @@ interface WishDao {
 //    @Insert
 //    fun insertAll(vararg wishes: Wish)
 
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert(wish: Wish)
 
     @Delete
