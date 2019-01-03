@@ -29,6 +29,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
                 <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/wish_edit_input"
                         android:lines="1"
                         android:maxLines="1"
                         android:maxLength="100"
@@ -53,6 +54,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
                 <RadioButton
+                        android:checked="true"
                         android:id="@+id/radio_edit_private"
                         android:text="@string/edit_screen_radio_private"
                         android:layout_width="match_parent"
@@ -95,13 +97,6 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"/>
             </com.google.android.material.textfield.TextInputLayout>
-
-            <Button
-                    android:height="@dimen/big_button_height"
-                    android:text="@string/edit_screen_submit"
-                    android:id="@+id/edit_button_submit"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"/>
         </LinearLayout>
     </ScrollView>
 </LinearLayout>

@@ -9,6 +9,8 @@
         <item name="android:textViewStyle">@style/AppTheme.TextView</item>
         <item name="android:buttonStyle">@style/AppTheme.BigButton</item>
         <item name="buttonStyle">@style/AppTheme.BigButton</item>
+        <item name="actionMenuTextColor">@color/almostWhite</item>
+        <item name="android:actionMenuTextColor">@color/almostWhite</item>
     </style>
 
     <style name="AppTheme.BigButton" parent="Base.Widget.AppCompat.Button">

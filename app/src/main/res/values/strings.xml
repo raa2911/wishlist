@@ -16,5 +16,6 @@
 
     <!-- MENU ITEMS -->
     <string name="sing_out_button">Sing out</string>
+    <string name="save_button">Save</string>
 
 </resources>
