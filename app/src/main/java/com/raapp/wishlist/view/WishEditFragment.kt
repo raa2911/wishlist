@@ -5,8 +5,16 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import android.widget.Toast.LENGTH_LONG
 
 import com.raapp.wishlist.R
+import com.raapp.wishlist.models.PrivacyType
+import com.raapp.wishlist.models.Wish
+import com.raapp.wishlist.repository.WishRepository
+import com.raapp.wishlist.repository.WishRepositoryImpl
+import kotlinx.android.synthetic.main.fragment_wish_edit.*
+import kotlin.concurrent.thread
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -27,6 +35,9 @@ class WishEditFragment : Fragment() {
     private var param1: String? = null
     private var param2: String? = null
 
+    private var wishRepository: WishRepository? = null
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
@@ -39,8 +50,46 @@ class WishEditFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        this.context?.also {
+            wishRepository = WishRepositoryImpl.getInstance(it)
+        }
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_wish_edit, container, false)
+    }
+
+    override fun onStart() {
+        super.onStart()
+        edit_button_submit.setOnClickListener {
+            validateFields()
+        }
+    }
+
+    private fun validateFields() {
+        val title = wish_edit_input.text?.toString()
+        val link = link_edit_input.text?.toString()
+        val description = description_edit_input.text?.toString()
+        val privacyType = PrivacyType.getById(radio_group_privacy.checkedRadioButtonId)
+        if (title.isNullOrEmpty()) {
+            Toast.makeText(context, "Please fill title", LENGTH_LONG).show()
+        } else {
+            val wish = Wish(
+                title = title,
+                link = link,
+                description = description,
+                privacy = privacyType.ordinal
+            )
+            saveNewWish(wish)
+        }
+    }
+
+    private fun saveNewWish(wish: Wish) {
+        thread {
+            wishRepository?.addNewWishLocal(wish)
+            activity?.runOnUiThread {
+                Toast.makeText(context, "Wish successful added", LENGTH_LONG).show()
+                activity?.onBackPressed()
+            }
+        }
     }
 
     companion object {

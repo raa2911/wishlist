@@ -16,7 +16,10 @@ class WishRepositoryImpl(context: Context) : WishRepository {
     val db = Room.databaseBuilder(
         context,
         AppDatabase::class.java, "database-wish"
-    ).build()
+    )
+        .fallbackToDestructiveMigration()
+        .build()
+
 
     override fun addNewWishLocal(wish: Wish) {
         db.wishDao().insert(wish)
@@ -26,4 +29,15 @@ class WishRepositoryImpl(context: Context) : WishRepository {
         return db.wishDao().getAll()
     }
 
+    companion object {
+        var INSTANCE: WishRepository? = null
+
+        @JvmStatic
+        fun getInstance(context: Context): WishRepository {
+            if (INSTANCE == null) {
+                INSTANCE = WishRepositoryImpl(context)
+            }
+            return INSTANCE!!
+        }
+    }
 }

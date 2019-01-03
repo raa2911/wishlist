@@ -15,6 +15,9 @@ import com.google.firebase.auth.FirebaseUser
 import com.raapp.wishlist.BaseFragment
 
 import com.raapp.wishlist.R
+import com.raapp.wishlist.repository.WishRepository
+import com.raapp.wishlist.repository.WishRepositoryImpl
+import kotlin.concurrent.thread
 
 /**
  * A main [Fragment] screen.
@@ -22,17 +25,30 @@ import com.raapp.wishlist.R
  */
 class WishListFragment : BaseFragment() {
     private var firebaseUser: FirebaseUser? = null
+    private var wishRepository: WishRepository? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        this.context?.also {
+            wishRepository = WishRepositoryImpl.getInstance(it)
+        }
         val view = inflater.inflate(R.layout.fragment_wish_list, container, false)
         view.findViewById<FloatingActionButton>(R.id.wish_list_fab).setOnClickListener {
             this@WishListFragment.findNavController().navigate(R.id.action_wishListFragment_to_wishEditFragment)
         }
-        view.findViewById<TextView>(R.id.wish_list_label).text = firebaseUser?.toString()
+        updateCounter(view)
         return view
+    }
+
+    private fun updateCounter(view: View) {
+        thread {
+            val wishCount = wishRepository?.getAllWishesLocal()?.size?.toString()
+            activity?.runOnUiThread {
+                view.findViewById<TextView>(R.id.wish_list_label).text = wishCount
+            }
+        }
     }
 
     override fun onStart() {
