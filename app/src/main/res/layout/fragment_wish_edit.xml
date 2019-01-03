@@ -53,10 +53,10 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
                 <RadioButton
-                        android:id="@+id/radio_edit_private"
-                        android:text="@string/edit_screen_radio_private"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"/>
+                    android:id="@+id/radio_edit_private"
+                    android:text="@string/edit_screen_radio_private"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
                 <RadioButton
                         android:id="@+id/radio_edit_friends"
                         android:text="@string/edit_screen_radio_friends"
