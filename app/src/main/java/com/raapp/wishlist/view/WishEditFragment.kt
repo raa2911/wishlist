@@ -16,6 +16,8 @@ import com.raapp.wishlist.models.PrivacyType
 import com.raapp.wishlist.models.Wish
 import com.raapp.wishlist.repository.WishRepository
 import com.raapp.wishlist.repository.WishRepositoryImpl
+import com.raapp.wishlist.utils.NonBlankRule
+import com.wajahatkarim3.easyvalidation.core.view_ktx.validator
 import kotlinx.android.synthetic.main.fragment_wish_edit.*
 import kotlin.concurrent.thread
 
@@ -66,6 +68,11 @@ class WishEditFragment : BaseFragment() {
     }
 
     private fun validateFields() {
+        wish_edit_input
+            .validator()
+            .addRule(NonBlankRule())
+            .check()
+
         val title = wish_edit_input.text?.toString()
         val link = link_edit_input.text?.toString()
         val description = description_edit_input.text?.toString()
