@@ -13,6 +13,8 @@
     <string name="edit_screen_radio_private">private item</string>
     <string name="edit_screen_radio_friends">only friends</string>
     <string name="edit_screen_radio_public">public</string>
+    <string name="edit_screen_title_error_empty">Please fill title</string>
+    <string name="edit_screen_link_error_format">Please paste correct link format</string>
 
     <!-- MENU ITEMS -->
     <string name="sing_out_button">Sing out</string>

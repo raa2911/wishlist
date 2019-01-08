@@ -25,11 +25,12 @@
 
             <!-- TITLE edit -->
             <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/wish_edit_title_layout"
                     android:hint="@string/edit_screen_title_hint"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
                 <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/wish_edit_input"
+                        android:id="@+id/wish_edit_title_input"
                         android:lines="1"
                         android:maxLines="1"
                         android:maxLength="100"
@@ -38,12 +39,9 @@
                         android:layout_height="wrap_content"/>
             </com.google.android.material.textfield.TextInputLayout>
 
-            <!-- CATEGORIES -->
-            <Spinner
-                    android:id="@+id/categories_spinner"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"/>
+            <!-- CATEGORIES TODO -->
 
+            <!-- PRIVACY -->
             <TextView
                     android:text=""
                     android:layout_width="match_parent"
@@ -71,6 +69,7 @@
                         android:layout_height="wrap_content"/>
             </RadioGroup>
 
+            <!-- LINK -->
             <com.google.android.material.textfield.TextInputLayout
                     android:hint="@string/edit_screen_link_hint"
                     android:id="@+id/link_edit_layout"
@@ -84,6 +83,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"/>
             </com.google.android.material.textfield.TextInputLayout>
+
+            <!-- DESCRIPTION -->
 
             <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/description_edit_layout"
