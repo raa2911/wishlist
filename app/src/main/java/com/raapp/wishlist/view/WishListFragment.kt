@@ -1,13 +1,13 @@
 package com.raapp.wishlist.view
 
-
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.firebase.ui.auth.AuthUI
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.firebase.auth.FirebaseAuth
@@ -15,9 +15,13 @@ import com.google.firebase.auth.FirebaseUser
 import com.raapp.wishlist.BaseFragment
 
 import com.raapp.wishlist.R
+import com.raapp.wishlist.adapters.WishListAdapter
+import com.raapp.wishlist.models.Wish
 import com.raapp.wishlist.repository.WishRepository
 import com.raapp.wishlist.repository.WishRepositoryImpl
+import java.util.*
 import kotlin.concurrent.thread
+import kotlin.concurrent.timerTask
 
 /**
  * A main [Fragment] screen.
@@ -26,6 +30,9 @@ import kotlin.concurrent.thread
 class WishListFragment : BaseFragment() {
     private var firebaseUser: FirebaseUser? = null
     private var wishRepository: WishRepository? = null
+    private var recycleView: RecyclerView? = null
+    private val adapter = WishListAdapter()
+    private var timer = Timer()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -38,17 +45,39 @@ class WishListFragment : BaseFragment() {
         view.findViewById<FloatingActionButton>(R.id.wish_list_fab).setOnClickListener {
             this@WishListFragment.findNavController().navigate(R.id.action_wishListFragment_to_wishEditFragment)
         }
-        updateCounter(view)
+        recycleView = view.findViewById<RecyclerView>(R.id.wish_list_recycler_view).apply {
+            layoutManager = LinearLayoutManager(context)
+            adapter = this@WishListFragment.adapter
+        }
+        updateList()
         return view
     }
 
-    private fun updateCounter(view: View) {
+    private fun updateList() {
         thread {
-            val wishCount = wishRepository?.getAllWishesLocal()?.size?.toString()
+            val wishList = wishRepository?.getAllWishesLocal() ?: return@thread
             activity?.runOnUiThread {
-                view.findViewById<TextView>(R.id.wish_list_label).text = wishCount
+                adapter.addItems(wishList)
             }
         }
+//        startTimer()
+    }
+
+    private fun startTimer() {
+        val task = timerTask {
+            activity?.runOnUiThread {
+                adapter.addItems(
+                    listOf(
+                        Wish(
+                            title = "Some new title",
+                            description = "Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text ",
+                            privacy = 1
+                        )
+                    )
+                )
+            }
+        }
+        timer.schedule(task, 700, 700)
     }
 
     override fun onStart() {
@@ -84,5 +113,10 @@ class WishListFragment : BaseFragment() {
     override fun onDetach() {
         super.onDetach()
         firebaseUser = null
+    }
+
+    override fun onStop() {
+        super.onStop()
+        timer.cancel()
     }
 }

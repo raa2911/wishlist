@@ -16,6 +16,10 @@
     <string name="edit_screen_title_error_empty">Please fill title</string>
     <string name="edit_screen_link_error_format">Please paste correct link format</string>
 
+    <string name="privacy_type_private">Private</string>
+    <string name="privacy_type_friend">For friend</string>
+    <string name="privacy_type_public">Public</string>
+
     <!-- MENU ITEMS -->
     <string name="sing_out_button">Sing out</string>
     <string name="save_button">Save</string>
