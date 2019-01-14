@@ -6,9 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.firebase.ui.auth.AuthUI
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
@@ -49,7 +47,7 @@ class WishListFragment : BaseFragment() {
         }
         val view = inflater.inflate(R.layout.fragment_wish_list, container, false)
         view.findViewById<FloatingActionButton>(R.id.wish_list_fab).setOnClickListener {
-            this@WishListFragment.findNavController().navigate(R.id.action_wishListFragment_to_wishEditFragment)
+            this@WishListFragment.findNavController().navigate(R.id.action_mainFragment_to_wishEditFragment)
         }
         recycleView = view.findViewById<RecyclerView>(R.id.wish_list_recycler_view).apply {
             adapter = this@WishListFragment.adapter
