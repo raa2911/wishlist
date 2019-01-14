@@ -20,6 +20,8 @@
     <string name="privacy_type_friend">For friend</string>
     <string name="privacy_type_public">Public</string>
 
+    <string name="empty_description">[no description]</string>
+
     <!-- MENU ITEMS -->
     <string name="sing_out_button">Sing out</string>
     <string name="save_button">Save</string>

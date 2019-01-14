@@ -52,7 +52,6 @@ class WishListFragment : BaseFragment() {
             this@WishListFragment.findNavController().navigate(R.id.action_wishListFragment_to_wishEditFragment)
         }
         recycleView = view.findViewById<RecyclerView>(R.id.wish_list_recycler_view).apply {
-            layoutManager = LinearLayoutManager(context)
             adapter = this@WishListFragment.adapter
         }
         updateList()
@@ -86,12 +85,7 @@ class WishListFragment : BaseFragment() {
         timer.schedule(task, 700, 700)
     }
 
-    override fun onStart() {
-        super.onStart()
-        initToolbar()
-    }
-
-    private fun initToolbar() {
+/*    private fun initToolbar() {
         getToolbar()?.inflateMenu(R.menu.wish_list_menu)
         getToolbar()?.setOnMenuItemClickListener {
             when (it.itemId) {
@@ -108,7 +102,7 @@ class WishListFragment : BaseFragment() {
                 else -> false
             }
         }
-    }
+    }*/
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
