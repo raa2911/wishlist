@@ -13,12 +13,14 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.raapp.wishlist.BaseFragment
+import com.raapp.wishlist.BuildConfig
 
 import com.raapp.wishlist.R
 import com.raapp.wishlist.adapters.WishListAdapter
 import com.raapp.wishlist.models.Wish
 import com.raapp.wishlist.repository.WishRepository
 import com.raapp.wishlist.repository.WishRepositoryImpl
+import com.raapp.wishlist.repository.WishRepositoryMockImpl
 import java.util.*
 import kotlin.concurrent.thread
 import kotlin.concurrent.timerTask
@@ -39,7 +41,11 @@ class WishListFragment : BaseFragment() {
         savedInstanceState: Bundle?
     ): View? {
         this.context?.also {
-            wishRepository = WishRepositoryImpl.getInstance(it)
+            wishRepository = if (BuildConfig.MOCK_DATA) {
+                WishRepositoryMockImpl()
+            } else {
+                WishRepositoryImpl.getInstance(it)
+            }
         }
         val view = inflater.inflate(R.layout.fragment_wish_list, container, false)
         view.findViewById<FloatingActionButton>(R.id.wish_list_fab).setOnClickListener {

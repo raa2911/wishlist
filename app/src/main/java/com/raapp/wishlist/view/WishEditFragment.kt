@@ -8,6 +8,7 @@ import android.widget.Toast
 import android.widget.Toast.LENGTH_LONG
 import androidx.annotation.StringRes
 import com.raapp.wishlist.BaseFragment
+import com.raapp.wishlist.BuildConfig
 import com.raapp.wishlist.Constants.EMPTY_STRING
 
 import com.raapp.wishlist.R
@@ -15,6 +16,7 @@ import com.raapp.wishlist.models.PrivacyType
 import com.raapp.wishlist.models.Wish
 import com.raapp.wishlist.repository.WishRepository
 import com.raapp.wishlist.repository.WishRepositoryImpl
+import com.raapp.wishlist.repository.WishRepositoryMockImpl
 import com.raapp.wishlist.utils.NonBlankRule
 import com.raapp.wishlist.utils.SimpleTextWatcher
 import com.wajahatkarim3.easyvalidation.core.Validator
@@ -42,7 +44,11 @@ class WishEditFragment : BaseFragment() {
         savedInstanceState: Bundle?
     ): View? {
         this.context?.also {
-            wishRepository = WishRepositoryImpl.getInstance(it)
+            wishRepository = if (BuildConfig.MOCK_DATA) {
+                WishRepositoryMockImpl()
+            } else {
+                WishRepositoryImpl.getInstance(it)
+            }
         }
         val view = inflater.inflate(R.layout.fragment_wish_edit, container, false)
         view.link_edit_input.addTextChangedListener(
