@@ -1,13 +1,10 @@
-package com.raapp.wishlist.repository
+package com.raapp.data.repository
 
 import android.content.Context
-import androidx.room.CoroutinesRoom
 import androidx.room.Room
-import com.raapp.wishlist.models.Wish
-import com.raapp.wishlist.repository.dao.AppDatabase
+import com.raapp.data.models.Wish
+import com.raapp.data.repository.dao.AppDatabase
 import kotlinx.coroutines.*
-import java.util.concurrent.Callable
-import kotlin.coroutines.CoroutineContext
 
 interface WishRepository {
 

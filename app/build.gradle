@@ -1,23 +1,27 @@
 apply plugin: 'com.android.application'
-
 apply plugin: 'kotlin-android'
-
 apply plugin: 'kotlin-android-extensions'
-
 apply plugin: "androidx.navigation.safeargs"
-
 apply plugin: 'kotlin-kapt'
 
 android {
-    compileSdkVersion 28
+    def globalConfiguration = rootProject.extensions.getByName("ext")
+
+    compileSdkVersion globalConfiguration["androidCompileSdkVersion"]
+    buildToolsVersion globalConfiguration["buildToolsVersion"]
+
+    lintOptions {
+        abortOnError false
+    }
+
     defaultConfig {
-        applicationId "com.raapp.wishlist"
-        minSdkVersion 21
-        targetSdkVersion 28
-        versionCode 1
-        versionName "1.0"
+        vectorDrawables.useSupportLibrary = true
+        applicationId globalConfiguration["androidApplicationId"]
+        minSdkVersion globalConfiguration["androidMinSdkVersion"]
+        targetSdkVersion globalConfiguration["androidTargetSdkVersion"]
+        versionCode globalConfiguration["androidVersionCode"]
+        versionName globalConfiguration["androidVersionName"]
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-        buildConfigField 'boolean', 'MOCK_DATA', "false"
     }
     buildTypes {
         release {
@@ -28,22 +32,22 @@ android {
     flavorDimensions 'tier'
     productFlavors {
         mock {
-            buildConfigField 'boolean', 'MOCK_DATA', "true"
             dimension 'tier'
         }
         real {
-            buildConfigField 'boolean', 'MOCK_DATA', "false"
             dimension 'tier'
         }
     }
 }
 
 dependencies {
-    def room_version = "2.1.0-alpha03"
-    def navigation_ktx_version = "1.0.0-alpha09"
+    // VERSION
+    def navigation_ktx_version = "1.0.0-alpha11"
     def navigation_ktx_test_version = "1.0.0-alpha06"
     def easyvalidation_version = "1.0.1"
+    // MODULES
     implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation project(':data')
     // Firebase Auth
     implementation 'com.google.firebase:firebase-core:16.0.6'
     implementation 'com.google.firebase:firebase-auth:16.1.0'
@@ -59,17 +63,7 @@ dependencies {
     implementation 'androidx.constraintlayout:constraintlayout:2.0.0-alpha3'
     implementation 'com.google.android.material:material:1.1.0-alpha02'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
-    testImplementation 'junit:junit:4.12'
-    androidTestImplementation 'androidx.test:runner:1.1.1'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.1'
     implementation 'androidx.recyclerview:recyclerview:1.1.0-alpha01'
-    implementation "androidx.room:room-runtime:$room_version"
-    annotationProcessor "androidx.room:room-compiler:$room_version" // use kapt for Kotlin
-    kapt "androidx.room:room-compiler:$room_version" // use kapt for Kotlin
-    // optional - Coroutines support for Room
-    implementation "androidx.room:room-coroutines:$room_version"
-    // Test helpers
-    testImplementation "androidx.room:room-testing:$room_version"
     implementation 'androidx.fragment:fragment-ktx:1.0.0'
     //validation
     implementation "com.wajahatkarim3.easyvalidation:easyvalidation-core:$easyvalidation_version"
@@ -79,6 +73,8 @@ dependencies {
     implementation "android.arch.navigation:navigation-runtime-ktx:$navigation_ktx_version"
     implementation "android.arch.navigation:navigation-testing-ktx:$navigation_ktx_test_version"
     implementation "android.arch.navigation:navigation-ui-ktx:$navigation_ktx_version"
+    // KOIN
+
 }
 
 apply plugin: 'com.google.gms.google-services'

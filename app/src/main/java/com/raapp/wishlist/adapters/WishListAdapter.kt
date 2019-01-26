@@ -3,7 +3,7 @@ package com.raapp.wishlist.adapters
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.raapp.wishlist.customView.WishListItem
-import com.raapp.wishlist.models.Wish
+import com.raapp.data.models.Wish
 
 class WishListAdapter : RecyclerView.Adapter<WishListAdapter.MyViewHolder>() {
     var wishList: MutableList<Wish> = mutableListOf()

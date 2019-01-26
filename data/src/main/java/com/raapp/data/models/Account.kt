@@ -1,4 +1,4 @@
-package com.raapp.wishlist.models
+package com.raapp.data.models
 
 data class Account(
     val id: Long = 0,

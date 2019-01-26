@@ -1,4 +1,4 @@
-package com.raapp.wishlist.models
+package com.raapp.data.models
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey

@@ -15,10 +15,10 @@ import com.raapp.wishlist.BuildConfig
 
 import com.raapp.wishlist.R
 import com.raapp.wishlist.adapters.WishListAdapter
-import com.raapp.wishlist.models.Wish
-import com.raapp.wishlist.repository.WishRepository
-import com.raapp.wishlist.repository.WishRepositoryImpl
-import com.raapp.wishlist.repository.WishRepositoryMockImpl
+import com.raapp.data.models.Wish
+import com.raapp.data.repository.WishRepository
+import com.raapp.data.repository.WishRepositoryImpl
+import com.raapp.data.repository.WishRepositoryMockImpl
 import java.util.*
 import kotlin.concurrent.thread
 import kotlin.concurrent.timerTask

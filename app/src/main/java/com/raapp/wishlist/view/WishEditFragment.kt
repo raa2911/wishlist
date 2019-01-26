@@ -12,11 +12,11 @@ import com.raapp.wishlist.BuildConfig
 import com.raapp.wishlist.Constants.EMPTY_STRING
 
 import com.raapp.wishlist.R
-import com.raapp.wishlist.models.PrivacyType
-import com.raapp.wishlist.models.Wish
-import com.raapp.wishlist.repository.WishRepository
-import com.raapp.wishlist.repository.WishRepositoryImpl
-import com.raapp.wishlist.repository.WishRepositoryMockImpl
+import com.raapp.data.models.PrivacyType
+import com.raapp.data.models.Wish
+import com.raapp.data.repository.WishRepository
+import com.raapp.data.repository.WishRepositoryImpl
+import com.raapp.data.repository.WishRepositoryMockImpl
 import com.raapp.wishlist.utils.NonBlankRule
 import com.raapp.wishlist.utils.SimpleTextWatcher
 import com.wajahatkarim3.easyvalidation.core.Validator

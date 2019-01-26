@@ -1,7 +1,7 @@
-package com.raapp.wishlist.repository.dao
+package com.raapp.data.repository.dao
 
 import androidx.room.*
-import com.raapp.wishlist.models.Wish
+import com.raapp.data.models.Wish
 
 @Dao
 interface WishDao {

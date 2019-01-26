@@ -3,13 +3,10 @@ package com.raapp.wishlist.customView
 import android.content.Context
 import android.util.AttributeSet
 import android.widget.FrameLayout
-import android.widget.LinearLayout
 import android.widget.RelativeLayout
-import androidx.constraintlayout.solver.widgets.ConstraintWidget
-import androidx.constraintlayout.widget.ConstraintLayout
 import com.raapp.wishlist.R
-import com.raapp.wishlist.models.PrivacyType
-import com.raapp.wishlist.models.Wish
+import com.raapp.data.models.PrivacyType
+import com.raapp.data.models.Wish
 import kotlinx.android.synthetic.main.wish_list_item.view.*
 
 class WishListItem : FrameLayout {
