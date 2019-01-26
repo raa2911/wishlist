@@ -2,7 +2,7 @@ package com.raapp.data.models
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.raapp.wishlist.Constants.EMPTY_STRING
+import com.raapp.data.Constants.EMPTY_STRING
 import java.io.Serializable
 
 @Entity(tableName = "wish")
