@@ -9,7 +9,7 @@ interface WishDao {
     @Query("SELECT * FROM wish")
     fun getAll(): List<Wish>
 
-    @Query("SELECT * FROM wish WHERE uid IS (:wishId)")
+    @Query("SELECT * FROM wish WHERE id IS (:wishId)")
     fun loadAllById(wishId: Int): Wish
 
 //    @Insert
