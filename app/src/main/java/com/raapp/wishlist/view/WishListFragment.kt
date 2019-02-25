@@ -5,15 +5,15 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.navigation.fragment.findNavController
+import androidx.navigation.Navigation
 import androidx.recyclerview.widget.RecyclerView
-import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.raapp.wishlist.BaseFragment
 import com.raapp.wishlist.R
 import com.raapp.wishlist.adapters.WishListAdapter
 import com.raapp.wishlist.viewModels.WishListViewModel
+import kotlinx.android.synthetic.main.fragment_wish_list.view.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.util.*
 
@@ -33,14 +33,20 @@ class WishListFragment : BaseFragment<WishListViewModel>() {
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.fragment_wish_list, container, false)
-        view.findViewById<FloatingActionButton>(R.id.wish_list_fab).setOnClickListener {
-            this@WishListFragment.findNavController().navigate(R.id.action_mainFragment_to_wishEditFragment)
-        }
-        recycleView = view.findViewById<RecyclerView>(R.id.wish_list_recycler_view).apply {
+        view.wish_list_fab.setOnClickListener { createNewWishScreen() }
+        recycleView = view.wish_list_recycler_view.apply {
             adapter = this@WishListFragment.adapter
         }
         updateList()
         return view
+    }
+
+    private fun createNewWishScreen() {
+        activity?.also {
+            Navigation
+                .findNavController(it, R.id.nav_host_fragment)
+                .navigate(R.id.action_mainFragment_to_wishEditFragment)
+        }
     }
 
     private fun updateList() {
