@@ -1,20 +1,12 @@
-package com.raapp.wishlist.repository
+package com.raapp.data.repository.implementation
 
 import android.content.Context
-import androidx.room.CoroutinesRoom
+import androidx.lifecycle.LiveData
 import androidx.room.Room
-import com.raapp.wishlist.models.Wish
-import com.raapp.wishlist.repository.dao.AppDatabase
-import kotlinx.coroutines.*
-import java.util.concurrent.Callable
-import kotlin.coroutines.CoroutineContext
+import com.raapp.data.models.Wish
+import com.raapp.data.repository.WishRepository
+import com.raapp.data.repository.dao.AppDatabase
 
-interface WishRepository {
-
-    fun addNewWishLocal(wish: Wish)
-
-    fun getAllWishesLocal(): List<Wish>
-}
 
 class WishRepositoryImpl(context: Context) : WishRepository {
     val db = Room.databaseBuilder(
@@ -25,12 +17,11 @@ class WishRepositoryImpl(context: Context) : WishRepository {
         .build()
 
     override fun addNewWishLocal(wish: Wish) {
-        GlobalScope.launch {
             db.wishDao().insert(wish)
-        }
+
     }
 
-    override fun getAllWishesLocal(): List<Wish> {
+    override fun getAllWishesLocal(): LiveData<List<Wish>> {
         return db.wishDao().getAll()
     }
 

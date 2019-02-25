@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+            android:title="List"
+            android:id="@+id/bottom_menu_wish_list"
+    />
+
+    <item
+            android:title="Wall"
+            android:id="@+id/bottom_menu_wall"
+    />
+
+    <item
+            android:title="Friends"
+            android:id="@+id/bottom_menu_friends"
+    />
+
+    <item
+            android:title="Account"
+            android:id="@+id/bottom_menu_account"
+    />
+
+</menu>

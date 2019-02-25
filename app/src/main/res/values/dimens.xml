@@ -1,8 +1,10 @@
 <resources>
     <dimen name="fab_margin">16dp</dimen>
     <dimen name="default_padding">16dp</dimen>
+    <dimen name="item_padding">8dp</dimen>
     <dimen name="default_padding_layout">24dp</dimen>
     <dimen name="big_button_height">48dp</dimen>
+    <dimen name="divider_thickness">1dp</dimen>
 
     <!-- TEXT -->
     <dimen name="text_size_titles">25sp</dimen>

@@ -3,13 +3,16 @@ package com.raapp.wishlist
 import android.util.Log
 import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModel
+import com.raapp.data.Constants
 import java.lang.Exception
 
 /**
  * A base [Fragment] subclass.
  * Recommend to use as parent for all Fragment screens in project.
  */
-abstract class BaseFragment : Fragment() {
+abstract class BaseFragment<T : ViewModel> : Fragment() {
+    abstract val viewModels: T
 
     /**
      * Return [Toolbar] by static id if it exist on current [view][getView]

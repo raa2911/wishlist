@@ -19,6 +19,8 @@ import com.google.firebase.auth.FirebaseUser
 import com.raapp.wishlist.BaseFragment
 
 import com.raapp.wishlist.R
+import com.raapp.wishlist.viewModels.EmptyViewModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.util.*
 import kotlin.concurrent.schedule
 
@@ -27,7 +29,7 @@ import kotlin.concurrent.schedule
  * A simple [Fragment] subclass.
  *
  */
-class SplashFragment : BaseFragment() {
+class SplashFragment : BaseFragment<EmptyViewModel>() {
     private var timer: Timer? = null
     private val splashDelay = 1000L
     private val authHandlerDelay = 200L
@@ -35,6 +37,7 @@ class SplashFragment : BaseFragment() {
     private val RC_SIGN_IN = 101
     private val RC_ERROR_DIALOG = 102
     private var handler: Handler? = null
+    override val viewModels: EmptyViewModel by viewModel()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

@@ -7,16 +7,13 @@
         android:layout_height="match_parent"
         tools:context=".view.WishListFragment">
 
-    <com.google.android.material.appbar.AppBarLayout
-            android:layout_height="wrap_content"
+    <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/wish_list_recycler_view"
+            android:scrollbars="vertical"
+            android:orientation="vertical"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             android:layout_width="match_parent"
-            android:theme="@style/AppTheme.AppBarOverlay">
-
-        <include layout="@layout/toolbar_view"/>
-
-    </com.google.android.material.appbar.AppBarLayout>
-
-    <include layout="@layout/fragment_wish_list_content"/>
+            android:layout_height="match_parent"/>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/wish_list_fab"

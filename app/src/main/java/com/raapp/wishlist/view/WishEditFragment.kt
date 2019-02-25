@@ -8,25 +8,27 @@ import android.widget.Toast
 import android.widget.Toast.LENGTH_LONG
 import androidx.annotation.StringRes
 import com.raapp.wishlist.BaseFragment
-import com.raapp.wishlist.Constants.EMPTY_STRING
+import com.raapp.data.Constants.EMPTY_STRING
 
 import com.raapp.wishlist.R
-import com.raapp.wishlist.models.PrivacyType
-import com.raapp.wishlist.models.Wish
-import com.raapp.wishlist.repository.WishRepository
-import com.raapp.wishlist.repository.WishRepositoryImpl
+import com.raapp.data.models.PrivacyType
+import com.raapp.data.models.Wish
+import com.raapp.data.repository.WishRepository
+import com.raapp.data.repository.implementation.WishRepositoryImpl
 import com.raapp.wishlist.utils.NonBlankRule
 import com.raapp.wishlist.utils.SimpleTextWatcher
+import com.raapp.wishlist.viewModels.EmptyViewModel
 import com.wajahatkarim3.easyvalidation.core.Validator
 import kotlinx.android.synthetic.main.fragment_wish_edit.*
 import kotlinx.android.synthetic.main.fragment_wish_edit.view.*
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class WishEditFragment : BaseFragment() {
+class WishEditFragment : BaseFragment<EmptyViewModel>() {
     var wish: Wish? = null
         private set(value) {
             field = value
         }
-
+    override val viewModels: EmptyViewModel by viewModel()
     private var wishRepository: WishRepository? = null
 
 
@@ -43,6 +45,7 @@ class WishEditFragment : BaseFragment() {
     ): View? {
         this.context?.also {
             wishRepository = WishRepositoryImpl.getInstance(it)
+
         }
         val view = inflater.inflate(R.layout.fragment_wish_edit, container, false)
         view.link_edit_input.addTextChangedListener(
