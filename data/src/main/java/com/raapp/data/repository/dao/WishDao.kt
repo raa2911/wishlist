@@ -1,5 +1,6 @@
 package com.raapp.data.repository.dao
 
+import androidx.lifecycle.LiveData
 import androidx.room.*
 import com.raapp.data.models.Wish
 
@@ -7,13 +8,13 @@ import com.raapp.data.models.Wish
 interface WishDao {
 
     @Query("SELECT * FROM wish")
-    fun getAll(): List<Wish>
+    fun getAll(): LiveData<List<Wish>>
 
     @Query("SELECT * FROM wish WHERE id IS (:wishId)")
-    fun loadAllById(wishId: Int): Wish
+    fun loadById(wishId: Int): LiveData<Wish>
 
-//    @Insert
-//    fun insertAll(vararg wishes: Wish)
+    @Insert
+    fun insertAll(vararg wishes: Wish)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert(wish: Wish)

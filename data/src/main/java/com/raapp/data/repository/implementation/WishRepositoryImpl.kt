@@ -1,6 +1,7 @@
 package com.raapp.data.repository.implementation
 
 import android.content.Context
+import androidx.lifecycle.LiveData
 import androidx.room.Room
 import com.raapp.data.models.Wish
 import com.raapp.data.repository.WishRepository
@@ -20,7 +21,7 @@ class WishRepositoryImpl(context: Context) : WishRepository {
 
     }
 
-    override fun getAllWishesLocal(): List<Wish> {
+    override fun getAllWishesLocal(): LiveData<List<Wish>> {
         return db.wishDao().getAll()
     }
 

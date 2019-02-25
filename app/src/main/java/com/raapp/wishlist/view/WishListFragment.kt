@@ -13,12 +13,10 @@ import com.google.firebase.auth.FirebaseUser
 import com.raapp.wishlist.BaseFragment
 import com.raapp.wishlist.R
 import com.raapp.wishlist.adapters.WishListAdapter
-import com.raapp.data.models.Wish
 import com.raapp.data.repository.WishRepository
 import com.raapp.data.repository.implementation.WishRepositoryImpl
 import java.util.*
 import kotlin.concurrent.thread
-import kotlin.concurrent.timerTask
 
 /**
  * A main [Fragment] screen.
@@ -53,29 +51,12 @@ class WishListFragment : BaseFragment() {
     private fun updateList() {
         thread {
             val wishList = wishRepository?.getAllWishesLocal() ?: return@thread
-            activity?.runOnUiThread {
-                adapter.addItems(wishList)
-            }
+//            activity?.runOnUiThread {
+//                adapter.addItems(wishList)
+//            }
         }
-//        startTimer()
     }
 
-    private fun startTimer() {
-        val task = timerTask {
-            activity?.runOnUiThread {
-                adapter.addItems(
-                    listOf(
-                        Wish(
-                            title = "Some new title",
-                            description = "Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text ",
-                            privacy = 1
-                        )
-                    )
-                )
-            }
-        }
-        timer.schedule(task, 700, 700)
-    }
 
 /*    private fun initToolbar() {
         getToolbar()?.inflateMenu(R.menu.wish_list_menu)
@@ -86,7 +67,7 @@ class WishListFragment : BaseFragment() {
                         AuthUI.getInstance()
                             .signOut(context)
                             .addOnCompleteListener {
-                                this.findNavController().navigate(R.id.action_wishListFragment_to_splashFragment)
+                                this.findNavController().navigate(R.id.action_mainFragment_to_splashFragment)
                             }
                     }
                     true

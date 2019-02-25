@@ -38,9 +38,13 @@ android {
 dependencies {
     // VERSION
     def room_version = "2.1.0-alpha04"
+    def lifecycle_version = "2.0.0"
 
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation 'androidx.core:core-ktx:1.0.1'
+
+    //LiveData
+    implementation "androidx.lifecycle:lifecycle-livedata:$lifecycle_version"
 
     // ROOM
     annotationProcessor "androidx.room:room-compiler:$room_version"
@@ -54,5 +58,5 @@ dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 }
 
-sourceCompatibility = "7"
-targetCompatibility = "7"
+sourceCompatibility = "8"
+targetCompatibility = "8"
