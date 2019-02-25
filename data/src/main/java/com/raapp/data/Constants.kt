@@ -1,4 +1,4 @@
-package com.raapp.wishlist
+package com.raapp.data
 
 object Constants {
     val LOG_TAG = "WishList >>>>>"

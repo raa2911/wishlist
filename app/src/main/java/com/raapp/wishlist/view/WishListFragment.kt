@@ -11,40 +11,27 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.raapp.wishlist.BaseFragment
-import com.raapp.wishlist.BuildConfig
-
 import com.raapp.wishlist.R
 import com.raapp.wishlist.adapters.WishListAdapter
-import com.raapp.wishlist.models.Wish
-import com.raapp.wishlist.repository.WishRepository
-import com.raapp.wishlist.repository.WishRepositoryImpl
-import com.raapp.wishlist.repository.WishRepositoryMockImpl
+import com.raapp.wishlist.viewModels.WishListViewModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.util.*
-import kotlin.concurrent.thread
-import kotlin.concurrent.timerTask
 
 /**
  * A main [Fragment] screen.
  * Consist list of user wishes and route controls to all flow of application.
  */
-class WishListFragment : BaseFragment() {
+class WishListFragment : BaseFragment<WishListViewModel>() {
     private var firebaseUser: FirebaseUser? = null
-    private var wishRepository: WishRepository? = null
     private var recycleView: RecyclerView? = null
     private val adapter = WishListAdapter()
     private var timer = Timer()
+    override val viewModels: WishListViewModel by viewModel()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        this.context?.also {
-            wishRepository = if (BuildConfig.MOCK_DATA) {
-                WishRepositoryMockImpl()
-            } else {
-                WishRepositoryImpl.getInstance(it)
-            }
-        }
         val view = inflater.inflate(R.layout.fragment_wish_list, container, false)
         view.findViewById<FloatingActionButton>(R.id.wish_list_fab).setOnClickListener {
             this@WishListFragment.findNavController().navigate(R.id.action_mainFragment_to_wishEditFragment)
@@ -57,31 +44,11 @@ class WishListFragment : BaseFragment() {
     }
 
     private fun updateList() {
-        thread {
-            val wishList = wishRepository?.getAllWishesLocal() ?: return@thread
-            activity?.runOnUiThread {
-                adapter.addItems(wishList)
-            }
-        }
-//        startTimer()
+        viewModels.getWishList().observe(this, androidx.lifecycle.Observer {
+            adapter.addItems(it)
+        })
     }
 
-    private fun startTimer() {
-        val task = timerTask {
-            activity?.runOnUiThread {
-                adapter.addItems(
-                    listOf(
-                        Wish(
-                            title = "Some new title",
-                            description = "Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text ",
-                            privacy = 1
-                        )
-                    )
-                )
-            }
-        }
-        timer.schedule(task, 700, 700)
-    }
 
 /*    private fun initToolbar() {
         getToolbar()?.inflateMenu(R.menu.wish_list_menu)
@@ -92,7 +59,7 @@ class WishListFragment : BaseFragment() {
                         AuthUI.getInstance()
                             .signOut(context)
                             .addOnCompleteListener {
-                                this.findNavController().navigate(R.id.action_wishListFragment_to_splashFragment)
+                                this.findNavController().navigate(R.id.action_mainFragment_to_splashFragment)
                             }
                     }
                     true
