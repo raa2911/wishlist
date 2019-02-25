@@ -36,12 +36,14 @@ android {
             dimension 'tier'
             buildConfigField 'boolean', 'MOCK_REPOSITORY', "true"
             buildConfigField 'boolean', 'CRASHLYTICS', "false"
+            resValue "string", "flavored_app_name", "WishList-mocked"
             applicationIdSuffix ".mock"
         }
         real {
             dimension 'tier'
             buildConfigField 'boolean', 'MOCK_REPOSITORY', "false"
             buildConfigField 'boolean', 'CRASHLYTICS', "true"
+            resValue "string", "flavored_app_name", "WishList"
         }
     }
 }
