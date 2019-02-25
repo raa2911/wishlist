@@ -2,15 +2,18 @@ package com.raapp.data.repository.mockImplementation
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.raapp.data.logLine
 import com.raapp.data.models.Wish
 import com.raapp.data.repository.WishRepository
 
 class WishRepositoryMockImpl : WishRepository {
     override fun addNewWishLocal(wish: Wish) {
-        // do nothing
+        logLine("launched")
     }
 
     override fun getAllWishesLocal(): LiveData<List<Wish>> {
+        logLine("launched")
+
         return MutableLiveData<List<Wish>>().apply {
             value = listOf(
                 Wish(

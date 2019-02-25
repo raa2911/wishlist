@@ -13,7 +13,6 @@ android {
     lintOptions {
         abortOnError false
     }
-
     defaultConfig {
         vectorDrawables.useSupportLibrary = true
         applicationId globalConfiguration["androidApplicationId"]
@@ -22,6 +21,8 @@ android {
         versionCode globalConfiguration["androidVersionCode"]
         versionName globalConfiguration["androidVersionName"]
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        buildConfigField 'boolean', 'MOCK_REPOSITORY', "false"
+        buildConfigField 'boolean', 'CRASHLYTICS', "true"
     }
     buildTypes {
         release {
@@ -33,9 +34,14 @@ android {
     productFlavors {
         mock {
             dimension 'tier'
+            buildConfigField 'boolean', 'MOCK_REPOSITORY', "true"
+            buildConfigField 'boolean', 'CRASHLYTICS', "false"
+            applicationIdSuffix ".mock"
         }
         real {
             dimension 'tier'
+            buildConfigField 'boolean', 'MOCK_REPOSITORY', "false"
+            buildConfigField 'boolean', 'CRASHLYTICS', "true"
         }
     }
 }
@@ -47,6 +53,8 @@ dependencies {
     def easyvalidation_version = "1.0.1"
     def koin_version = '1.0.2'
     def lifecycle_version = "2.0.0"
+    def paging_version = "2.1.0"
+
     // MODULES
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation project(':data')
@@ -81,6 +89,8 @@ dependencies {
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle_version"
     implementation "androidx.lifecycle:lifecycle-viewmodel:$lifecycle_version"
     kapt "androidx.lifecycle:lifecycle-compiler:$lifecycle_version"
+    // PAGING
+    implementation "androidx.paging:paging-runtime-ktx:$paging_version"
 }
 
 apply plugin: 'com.google.gms.google-services'

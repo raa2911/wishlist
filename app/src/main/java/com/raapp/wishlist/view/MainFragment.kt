@@ -10,14 +10,18 @@ import androidx.navigation.findNavController
 
 import com.raapp.wishlist.R
 import androidx.navigation.ui.NavigationUI
+import com.raapp.wishlist.BaseFragment
+import com.raapp.wishlist.viewModels.EmptyViewModel
 import kotlinx.android.synthetic.main.fragment_main.*
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
 /**
  * A simple [Fragment] subclass.
  *
  */
-class MainFragment : Fragment() {
+class MainFragment : BaseFragment<EmptyViewModel>() {
+    override val viewModels: EmptyViewModel by viewModel()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

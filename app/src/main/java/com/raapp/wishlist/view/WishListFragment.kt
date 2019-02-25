@@ -13,30 +13,25 @@ import com.google.firebase.auth.FirebaseUser
 import com.raapp.wishlist.BaseFragment
 import com.raapp.wishlist.R
 import com.raapp.wishlist.adapters.WishListAdapter
-import com.raapp.data.repository.WishRepository
-import com.raapp.data.repository.implementation.WishRepositoryImpl
+import com.raapp.wishlist.viewModels.WishListViewModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.util.*
-import kotlin.concurrent.thread
 
 /**
  * A main [Fragment] screen.
  * Consist list of user wishes and route controls to all flow of application.
  */
-class WishListFragment : BaseFragment() {
+class WishListFragment : BaseFragment<WishListViewModel>() {
     private var firebaseUser: FirebaseUser? = null
-    private var wishRepository: WishRepository? = null
     private var recycleView: RecyclerView? = null
     private val adapter = WishListAdapter()
     private var timer = Timer()
+    override val viewModels: WishListViewModel by viewModel()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        this.context?.also {
-            wishRepository = WishRepositoryImpl.getInstance(it) //TODO
-
-        }
         val view = inflater.inflate(R.layout.fragment_wish_list, container, false)
         view.findViewById<FloatingActionButton>(R.id.wish_list_fab).setOnClickListener {
             this@WishListFragment.findNavController().navigate(R.id.action_mainFragment_to_wishEditFragment)
@@ -49,12 +44,9 @@ class WishListFragment : BaseFragment() {
     }
 
     private fun updateList() {
-        thread {
-            val wishList = wishRepository?.getAllWishesLocal() ?: return@thread
-//            activity?.runOnUiThread {
-//                adapter.addItems(wishList)
-//            }
-        }
+        viewModels.getWishList().observe(this, androidx.lifecycle.Observer {
+            adapter.addItems(it)
+        })
     }
 
 

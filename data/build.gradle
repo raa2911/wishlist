@@ -8,29 +8,20 @@ android {
     compileSdkVersion globalConfiguration["androidCompileSdkVersion"]
     buildToolsVersion globalConfiguration["buildToolsVersion"]
 
+    lintOptions {
+        abortOnError false
+    }
     defaultConfig {
         minSdkVersion globalConfiguration["androidMinSdkVersion"]
         targetSdkVersion globalConfiguration["androidTargetSdkVersion"]
         versionCode globalConfiguration["androidVersionCode"]
         versionName globalConfiguration["androidVersionName"]
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-        buildConfigField 'boolean', 'MOCK_DATA', "false"
     }
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-        }
-    }
-    flavorDimensions 'tier'
-    productFlavors {
-        mock {
-            buildConfigField 'boolean', 'MOCK_DATA', "true"
-            dimension 'tier'
-        }
-        real {
-            buildConfigField 'boolean', 'MOCK_DATA', "false"
-            dimension 'tier'
         }
     }
 }
@@ -39,6 +30,7 @@ dependencies {
     // VERSION
     def room_version = "2.1.0-alpha04"
     def lifecycle_version = "2.0.0"
+    def paging_version = "2.1.0"
 
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation 'androidx.core:core-ktx:1.0.1'
@@ -52,6 +44,8 @@ dependencies {
     kapt "androidx.room:room-compiler:$room_version"
     // Test helpers
     testImplementation "androidx.room:room-testing:$room_version"
+    // PAGING
+    implementation "androidx.paging:paging-runtime-ktx:$paging_version"
 
     // TEST
     testImplementation 'junit:junit:4.12'
