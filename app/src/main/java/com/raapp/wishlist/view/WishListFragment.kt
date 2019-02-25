@@ -7,8 +7,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.RecyclerView
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseUser
 import com.raapp.wishlist.BaseFragment
 import com.raapp.wishlist.R
 import com.raapp.wishlist.adapters.WishListAdapter
@@ -22,7 +20,6 @@ import java.util.*
  * Consist list of user wishes and route controls to all flow of application.
  */
 class WishListFragment : BaseFragment<WishListViewModel>() {
-    private var firebaseUser: FirebaseUser? = null
     private var recycleView: RecyclerView? = null
     private val adapter = WishListAdapter()
     private var timer = Timer()
@@ -74,17 +71,6 @@ class WishListFragment : BaseFragment<WishListViewModel>() {
             }
         }
     }*/
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        firebaseUser = FirebaseAuth.getInstance().currentUser
-    }
-
-
-    override fun onDetach() {
-        super.onDetach()
-        firebaseUser = null
-    }
 
     override fun onStop() {
         super.onStop()
