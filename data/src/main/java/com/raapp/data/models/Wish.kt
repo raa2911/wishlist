@@ -1,20 +1,19 @@
-package com.raapp.wishlist.models
+package com.raapp.data.models
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.raapp.wishlist.Constants.EMPTY_STRING
+import com.raapp.data.Constants.EMPTY_STRING
 import java.io.Serializable
 
 @Entity(tableName = "wish")
 data class Wish(
+    @PrimaryKey(autoGenerate = true)
+    var id: Long = 0,
     var title: String = EMPTY_STRING,
     var privacy: Int = PrivacyType.PRIVATE.ordinal,
     var link: String? = null,
     var description: String? = null
-) : Serializable {
-    @PrimaryKey(autoGenerate = true)
-    var uid: Int = 0
-}
+) : Serializable
 
 enum class PrivacyType {
     PRIVATE, FRIENDS, PUBLIC;

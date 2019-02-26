@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">WishList</string>
     <string name="action_settings">Settings</string>
+    <string name="empty_string"/>
 
     <!-- WISH LIST screen -->
 
@@ -16,8 +17,23 @@
     <string name="edit_screen_title_error_empty">Please fill title</string>
     <string name="edit_screen_link_error_format">Please paste correct link format</string>
 
+    <string name="privacy_type_private">Private</string>
+    <string name="privacy_type_friend">For friend</string>
+    <string name="privacy_type_public">Public</string>
+
+    <string name="empty_description">[no description]</string>
+
+    <!-- PROFILE SCREEN -->
+    <string name="button_log_out">Log out</string>
+
     <!-- MENU ITEMS -->
     <string name="sing_out_button">Sing out</string>
     <string name="save_button">Save</string>
+
+    <!-- MAIN BOTTOM MENU -->
+    <string name="button_friends">Friends</string>
+    <string name="button_wish_list">List</string>
+    <string name="button_wall">Wall</string>
+    <string name="button_profile">Profile</string>
 
 </resources>

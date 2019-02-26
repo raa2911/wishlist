@@ -15,10 +15,11 @@ import com.firebase.ui.auth.IdpResponse
 import com.google.android.gms.common.ConnectionResult
 import com.google.android.gms.common.GoogleApiAvailability
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseUser
 import com.raapp.wishlist.BaseFragment
 
 import com.raapp.wishlist.R
+import com.raapp.wishlist.viewModels.SplashViewModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.util.*
 import kotlin.concurrent.schedule
 
@@ -27,14 +28,10 @@ import kotlin.concurrent.schedule
  * A simple [Fragment] subclass.
  *
  */
-class SplashFragment : BaseFragment() {
+class SplashFragment : BaseFragment<SplashViewModel>() {
     private var timer: Timer? = null
-    private val splashDelay = 1000L
-    private val authHandlerDelay = 200L
-    private var firebaseUser: FirebaseUser? = null
-    private val RC_SIGN_IN = 101
-    private val RC_ERROR_DIALOG = 102
     private var handler: Handler? = null
+    override val viewModels: SplashViewModel by viewModel()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -43,11 +40,6 @@ class SplashFragment : BaseFragment() {
         startTimer()
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_splash, container, false)
-    }
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        firebaseUser = FirebaseAuth.getInstance().currentUser
     }
 
     override fun onDestroy() {
@@ -63,12 +55,14 @@ class SplashFragment : BaseFragment() {
      */
     private fun startTimer() {
         timer = Timer()
-        timer?.schedule(splashDelay) {
-            if (firebaseUser != null) {
-                this@SplashFragment.findNavController().navigate(R.id.action_splashFragment_to_wishListFragment)
-            } else {
-                initFirebaseAuthUI()
-            }
+        timer?.schedule(SPLASH_DELAY) { nextScreen() }
+    }
+
+    private fun nextScreen() {
+        if (viewModels.isUserLogedIn()) {
+            findNavController().navigate(R.id.action_splashFragment_to_wishListFragment)
+        } else {
+            initFirebaseAuthUI()
         }
     }
 
@@ -96,9 +90,7 @@ class SplashFragment : BaseFragment() {
     private fun showFirebaseAuthUIDelayed() {
         clearAuthHandler()
         handler = Handler(activity?.mainLooper)
-        handler?.postDelayed({
-            showFirebaseAuthUI()
-        }, authHandlerDelay)
+        handler?.postDelayed({ showFirebaseAuthUI() }, AUTH_HANDLER_DELAY)
     }
 
     private fun showFirebaseAuthUI() {
@@ -134,14 +126,12 @@ class SplashFragment : BaseFragment() {
         if (requestCode == RC_SIGN_IN) {
             val response = IdpResponse.fromResultIntent(data)
             logMessage("onActivityResult RC_SIGN_IN, response is $response")
-            if (resultCode == Activity.RESULT_OK) {
+            if (resultCode == Activity.RESULT_OK || viewModels.isUserLogedIn()) {
                 // Successfully signed in
-                val user = FirebaseAuth.getInstance().currentUser
-                logMessage("onActivityResult user is $user")
                 this@SplashFragment.findNavController().navigate(R.id.action_splashFragment_to_wishListFragment)
             } else {
                 initFirebaseAuthUI()
-                logMessage("onActivityResult has error")
+                logMessage("onActivityResult has error, resultCode is $resultCode")
             }
         }
 
@@ -159,5 +149,12 @@ class SplashFragment : BaseFragment() {
         timer?.cancel()
         timer?.purge()
         timer = null
+    }
+
+    companion object {
+        private const val SPLASH_DELAY = 1000L
+        private const val AUTH_HANDLER_DELAY = 200L
+        private const val RC_SIGN_IN = 101
+        private const val RC_ERROR_DIALOG = 102
     }
 }
