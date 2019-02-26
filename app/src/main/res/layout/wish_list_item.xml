@@ -3,7 +3,7 @@
               android:orientation="vertical"
               android:layout_width="match_parent"
               android:layout_height="wrap_content"
-              android:background="@android:color/holo_orange_light"
+              android:background="@android:color/darker_gray"
               android:layout_marginStart="@dimen/default_padding_layout"
               android:layout_marginEnd="@dimen/default_padding_layout"
               android:layout_marginBottom="@dimen/item_padding"
@@ -11,13 +11,11 @@
               android:elevation="4dp">
 
     <TextView
-            android:text="Title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/wish_item_title"/>
 
     <TextView
-            android:text="Some text"
             android:textColor="@color/darkGray"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -26,7 +24,6 @@
             android:id="@+id/wish_item_description"/>
 
     <TextView
-            android:text="Private"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/wish_item_privacy"/>

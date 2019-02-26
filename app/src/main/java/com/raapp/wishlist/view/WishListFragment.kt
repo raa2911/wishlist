@@ -5,11 +5,11 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.navigation.Navigation
 import androidx.recyclerview.widget.RecyclerView
 import com.raapp.wishlist.BaseFragment
 import com.raapp.wishlist.R
 import com.raapp.wishlist.adapters.WishListAdapter
+import com.raapp.wishlist.extentions.findMainNavController
 import com.raapp.wishlist.viewModels.WishListViewModel
 import kotlinx.android.synthetic.main.fragment_wish_list.view.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -39,11 +39,7 @@ class WishListFragment : BaseFragment<WishListViewModel>() {
     }
 
     private fun createNewWishScreen() {
-        activity?.also {
-            Navigation
-                .findNavController(it, R.id.nav_host_fragment)
-                .navigate(R.id.action_mainFragment_to_wishEditFragment)
-        }
+        activity?.findMainNavController()?.navigate(R.id.action_mainFragment_to_wishEditFragment)
     }
 
     private fun updateList() {
@@ -51,26 +47,6 @@ class WishListFragment : BaseFragment<WishListViewModel>() {
             adapter.addItems(it)
         })
     }
-
-
-/*    private fun initToolbar() {
-        getToolbar()?.inflateMenu(R.menu.wish_list_menu)
-        getToolbar()?.setOnMenuItemClickListener {
-            when (it.itemId) {
-                R.id.log_out_menu_item -> {
-                    context?.let { context ->
-                        AuthUI.getInstance()
-                            .signOut(context)
-                            .addOnCompleteListener {
-                                this.findNavController().navigate(R.id.action_mainFragment_to_splashFragment)
-                            }
-                    }
-                    true
-                }
-                else -> false
-            }
-        }
-    }*/
 
     override fun onStop() {
         super.onStop()

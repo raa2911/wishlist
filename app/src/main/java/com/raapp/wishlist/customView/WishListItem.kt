@@ -11,7 +11,7 @@ import kotlinx.android.synthetic.main.wish_list_item.view.*
 
 class WishListItem : FrameLayout {
     init {
-        RelativeLayout.inflate(context, R.layout.wish_list_item, this)
+        FrameLayout.inflate(context, R.layout.wish_list_item, this)
     }
 
     var item: Wish? = null
