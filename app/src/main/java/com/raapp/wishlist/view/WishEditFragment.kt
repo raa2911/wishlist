@@ -1,37 +1,41 @@
 package com.raapp.wishlist.view
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import android.widget.Toast.LENGTH_LONG
+import androidx.annotation.StringRes
+import com.raapp.wishlist.BaseFragment
+import com.raapp.data.Constants.EMPTY_STRING
 
 import com.raapp.wishlist.R
+import com.raapp.data.models.PrivacyType
+import com.raapp.data.models.Wish
+import com.raapp.data.repository.WishRepository
+import com.raapp.data.repository.implementation.WishRepositoryImpl
+import com.raapp.wishlist.utils.NonBlankRule
+import com.raapp.wishlist.utils.SimpleTextWatcher
+import com.raapp.wishlist.viewModels.EmptyViewModel
+import com.wajahatkarim3.easyvalidation.core.Validator
+import kotlinx.android.synthetic.main.fragment_wish_edit.*
+import kotlinx.android.synthetic.main.fragment_wish_edit.view.*
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
+class WishEditFragment : BaseFragment<EmptyViewModel>() {
+    var wish: Wish? = null
+        private set(value) {
+            field = value
+        }
+    override val viewModels: EmptyViewModel by viewModel()
+    private var wishRepository: WishRepository? = null
 
-/**
- * A simple [Fragment] subclass.
- * Activities that contain this fragment must implement the
- * [WishEditFragment.OnFragmentInteractionListener] interface
- * to handle interaction events.
- * Use the [WishEditFragment.newInstance] factory method to
- * create an instance of this fragment.
- *
- */
-class WishEditFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
+            wish = it.getSerializable(WishEditFragment::wish.name) as? Wish
         }
     }
 
@@ -39,26 +43,116 @@ class WishEditFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_wish_edit, container, false)
+        this.context?.also {
+            wishRepository = WishRepositoryImpl.getInstance(it)
+
+        }
+        val view = inflater.inflate(R.layout.fragment_wish_edit, container, false)
+        view.link_edit_input.addTextChangedListener(
+            SimpleTextWatcher {
+                linkErrorMessage(null)
+            }
+        )
+        view.wish_edit_title_input.addTextChangedListener(
+            SimpleTextWatcher {
+                titleErrorMessage(null)
+            }
+        )
+        return view
+    }
+
+    override fun onStart() {
+        super.onStart()
+        initToolbar()
+    }
+
+    private fun validateFields() {
+        var hasErrors = false
+        // get values
+        val title = wish_edit_title_input.text?.toString() ?: EMPTY_STRING
+        val link = link_edit_input.text?.toString()
+        val description = description_edit_input.text?.toString()
+        val privacyType = PrivacyType.getById(radio_group_privacy.checkedRadioButtonId)
+        // validate values
+        Validator(title)
+            .addRule(NonBlankRule())
+            .addErrorCallback {
+                hasErrors = true
+                titleErrorMessage(R.string.edit_screen_title_error_empty)
+            }
+            .check()
+        if (link != null) {
+            Validator(link)
+                .validUrl()
+                .addErrorCallback {
+                    hasErrors = true
+                    linkErrorMessage(R.string.edit_screen_link_error_format)
+                }
+                .check()
+        }
+
+        if (hasErrors) {
+            Toast.makeText(context, "Errors in inputs", LENGTH_LONG).show()
+        } else {
+            val wish = Wish(
+                title = title,
+                link = link,
+                description = description,
+                privacy = privacyType.ordinal
+            )
+            saveNewWish(wish)
+        }
+    }
+
+    private fun titleErrorMessage(@StringRes message: Int? = null) {
+        if (message == null) {
+            wish_edit_title_layout.isErrorEnabled = false
+        } else {
+            wish_edit_title_layout.error = getString(message)
+        }
+    }
+
+    private fun linkErrorMessage(@StringRes message: Int? = null) {
+        if (message == null) {
+            link_edit_layout.isErrorEnabled = false
+        } else {
+            link_edit_layout.error = getString(message)
+        }
+    }
+
+    private fun saveNewWish(wish: Wish) {
+        wishRepository?.addNewWishLocal(wish)
+        Toast.makeText(context, "Wish successful added", LENGTH_LONG).show()
+        activity?.onBackPressed()
+    }
+
+
+    private fun initToolbar() {
+        getToolbar()?.run {
+            inflateMenu(R.menu.wish_edit_menu)
+            setOnMenuItemClickListener {
+                when (it.itemId) {
+                    R.id.edit_save_menu_item -> {
+                        validateFields()
+                        true
+                    }
+                    else -> false
+                }
+            }
+            setNavigationIcon(R.drawable.ic_arrow_back_light)
+            setNavigationOnClickListener {
+                onBackPressed()
+            }
+        }
     }
 
     companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment WishEditFragment.
-         */
-        // TODO: Rename and change types and number of parameters
+        // TODO
         @JvmStatic
-        fun newInstance(param1: String, param2: String) =
+        fun newInstance(wishForEdit: Wish? = null) =
             WishEditFragment().apply {
                 arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
+                    putSerializable(WishEditFragment::wish.name, wishForEdit)
                 }
             }
     }

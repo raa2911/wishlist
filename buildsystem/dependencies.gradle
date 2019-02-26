@@ -1,0 +1,27 @@
+ext {
+    //Android
+    androidMinSdkVersion = 21
+    androidTargetSdkVersion = 28
+    androidCompileSdkVersion = 28
+    androidApplicationId = 'com.raapp.wishlist'
+    androidVersionCode = 1
+    androidVersionName = "0.9"
+    buildToolsVersion = "28.0.3"
+
+    //Libraries
+    jUnitVersion = "1.3.10"
+    // TODO
+
+
+/*    presentationDependencies = [
+            // TODO
+            qrScanner        : "me.dm7.barcodescanner:zxing:${qrScannerVersion}",
+            safetyNet        : "com.google.android.gms:play-services-safetynet:${playServicesVersion}"
+    ]
+
+    dataDependencies = [
+            // TODO
+            supportAnotations: "com.android.support:support-annotations:${supportAnotationsVersion}",
+            stetho           : "com.facebook.stetho:stetho-okhttp3:${stethoVersion}",
+    ]*/
+}
