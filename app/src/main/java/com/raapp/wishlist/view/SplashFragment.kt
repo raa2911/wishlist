@@ -126,14 +126,12 @@ class SplashFragment : BaseFragment<SplashViewModel>() {
         if (requestCode == RC_SIGN_IN) {
             val response = IdpResponse.fromResultIntent(data)
             logMessage("onActivityResult RC_SIGN_IN, response is $response")
-            if (resultCode == Activity.RESULT_OK) {
+            if (resultCode == Activity.RESULT_OK || viewModels.isUserLogedIn()) {
                 // Successfully signed in
-                val user = FirebaseAuth.getInstance().currentUser
-                logMessage("onActivityResult user is $user")
                 this@SplashFragment.findNavController().navigate(R.id.action_splashFragment_to_wishListFragment)
             } else {
                 initFirebaseAuthUI()
-                logMessage("onActivityResult has error")
+                logMessage("onActivityResult has error, resultCode is $resultCode")
             }
         }
 
