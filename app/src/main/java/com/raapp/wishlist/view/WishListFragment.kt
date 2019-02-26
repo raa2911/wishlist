@@ -13,7 +13,6 @@ import com.raapp.wishlist.extentions.findMainNavController
 import com.raapp.wishlist.viewModels.WishListViewModel
 import kotlinx.android.synthetic.main.fragment_wish_list.view.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import java.util.*
 
 /**
  * A main [Fragment] screen.
@@ -22,7 +21,6 @@ import java.util.*
 class WishListFragment : BaseFragment<WishListViewModel>() {
     private var recycleView: RecyclerView? = null
     private val adapter = WishListAdapter()
-    private var timer = Timer()
     override val viewModels: WishListViewModel by viewModel()
 
     override fun onCreateView(
@@ -46,10 +44,5 @@ class WishListFragment : BaseFragment<WishListViewModel>() {
         viewModels.getWishList().observe(this, androidx.lifecycle.Observer {
             adapter.addItems(it)
         })
-    }
-
-    override fun onStop() {
-        super.onStop()
-        timer.cancel()
     }
 }

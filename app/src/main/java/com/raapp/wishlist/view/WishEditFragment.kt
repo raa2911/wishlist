@@ -29,7 +29,7 @@ class WishEditFragment : BaseFragment<EmptyViewModel>() {
             field = value
         }
     override val viewModels: EmptyViewModel by viewModel()
-    private var wishRepository: WishRepository? = null
+    private var wishRepository: WishRepository? = null // TODO transit to ViewModel
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -147,7 +147,7 @@ class WishEditFragment : BaseFragment<EmptyViewModel>() {
     }
 
     companion object {
-        // TODO
+        // TODO add edit flow
         @JvmStatic
         fun newInstance(wishForEdit: Wish? = null) =
             WishEditFragment().apply {
